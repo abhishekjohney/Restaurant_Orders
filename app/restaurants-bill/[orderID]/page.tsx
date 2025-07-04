@@ -403,7 +403,17 @@ const Page = ({ params }: Props) => {
   const fetchFullList = async () => {
     try {
       setLoading(true);
-      const response = await GetStockItemListJasonRestarants();
+      // Use 'guest' as fallback user for unauthenticated users
+      let ReqUserID = "";
+      let ReqUserTypeID = "";
+      if (!session.data?.user || session.data?.user.id === "guest") {
+        ReqUserID = "guest";
+        ReqUserTypeID = "guest";
+      } else {
+        ReqUserID = session.data?.user.id || "";
+        ReqUserTypeID = session.data?.user.UserType || "";
+      }
+      const response = await GetStockItemListJasonRestarants(ReqUserID, ReqUserTypeID);
       const JSONData1 = JSON.parse(response[0]?.JSONData1);
       setFullProduct(JSONData1);
 
@@ -1547,6 +1557,14 @@ const Page = ({ params }: Props) => {
   };
 
   const handleMOPSubmit = async () => {
+    // REQUIRE LOGIN TO PLACE ORDER
+    // If user is guest, redirect to login and do not place order
+    if (!session || session.user?.id === "guest") {
+      // COMMENTED OUT: Allowing guests to place orders. Now requiring login.
+      // return; // (Old: guests could place orders)
+      window.location.href = "/login";
+      return;
+    }
     try {
       setLoading(true);
       const fullData: SalesListInterface = { ...mopData } as SalesListInterface;
@@ -1874,7 +1892,7 @@ const Page = ({ params }: Props) => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-blue-50 to-purple-100 font-montserrat">
       {loading && <Spinner />}
 
       <Dialog open={openLast} as="div" className="relative z-50 focus:outline-none" onClose={setOpenLast}>
@@ -1976,12 +1994,12 @@ const Page = ({ params }: Props) => {
         </CustomFunctionalModal>
       )}
 
-      <div className="p-2 mt-16 lg:mt-0 min-h-screen bg-blue-50">
+      <div className="p-4 mt-16 lg:mt-0 min-h-[80vh] max-w-7xl mx-auto rounded-2xl shadow-2xl bg-white/80 backdrop-blur-md">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
             <button className="hidden" />
           </SheetTrigger>
-          <SheetContent className="w-[90vw] md:w-[45vw]" side="right">
+          <SheetContent className="w-[90vw] md:w-[45vw] bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl" side="right">
             <SheetHeader>
               <SheetTitle className="font-montserrat font-semibold text-xl px-3 py-1.5">Cart</SheetTitle>
               <SheetDescription className="text-sm px-3 text-gray-600 flex flex-col">
@@ -2007,7 +2025,7 @@ const Page = ({ params }: Props) => {
               </SheetDescription>
             </SheetHeader>
 
-            <Card className="p-3 mt-4 space-y-3 max-h-[50vh] overflow-auto shadow-md rounded-xl">
+            <Card className="p-3 mt-4 space-y-3 max-h-[50vh] overflow-auto shadow-xl rounded-2xl bg-white/90 backdrop-blur">
               {restoCurrCart?.map((item: RestoBlankItemInterface, index) => {
                 const itemTotal = item.OrderQty * item.OrderRate;
                 if (item.DelFlag > 0) return null;
@@ -2113,7 +2131,7 @@ const Page = ({ params }: Props) => {
 
         <div className="grid grid-cols-12 gap-1">
           <div
-            className={`fixed md:relative z-30 md:z-0 bg-white border-r border-gray-300 p-4 h-full overflow-y-auto transition-transform duration-300 ease-in-out ${
+            className={`fixed md:relative z-30 md:z-0 bg-white/90 backdrop-blur-xl border-r border-gray-200 p-4 h-full overflow-y-auto transition-transform duration-300 ease-in-out rounded-2xl shadow-xl ${
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
             } w-3/4 md:w-auto col-span-3 md:col-span-2`}
           >
@@ -2134,9 +2152,9 @@ const Page = ({ params }: Props) => {
                           // Close sidebar on mobile when category is selected (but not expanded)
                           if (window.innerWidth < 786) setSidebarOpen(false);
                         }}
-                        className={`flex-1 text-left truncate font-semibold font-montserrat px-2 py-1 rounded ${
-                          isSelected ? "text-pink-600" : "text-slate-900"
-                        } hover:bg-gray-100`}
+                        className={`flex-1 text-left truncate font-semibold font-montserrat px-2 py-1 rounded-xl ${
+                          isSelected ? "text-pink-600 bg-pink-50" : "text-slate-900"
+                        } hover:bg-pink-100 transition`}
                       >
                         {cat}
                       </button>
@@ -2176,9 +2194,9 @@ const Page = ({ params }: Props) => {
                                 // Close sidebar on mobile when subcategory is selected
                                 if (window.innerWidth < 786) setSidebarOpen(false);
                               }}
-                              className={`text-sm text-left font-normal font-workSans truncate px-2 py-1 rounded ${
-                                selectedSub === sub.subCategory ? "text-pink-500 !font-semibold bg-pink-50" : "text-gray-500"
-                              } hover:text-black hover:bg-gray-50`}
+                              className={`text-sm text-left font-normal font-montserrat truncate px-2 py-1 rounded-xl ${
+                                selectedSub === sub.subCategory ? "text-pink-500 font-semibold bg-pink-50" : "text-gray-500"
+                              } hover:text-pink-600 hover:bg-pink-50 transition`}
                             >
                               — {sub.subCategory}
                             </button>
