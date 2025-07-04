@@ -1,6 +1,6 @@
 import { SalesListInterface } from "@/types";
 
-export const GetStockItemListJasonRestarants = async () => {
+export const GetStockItemListJasonRestarants = async (ReqUserID = "", ReqUserTypeID = "") => {
   try {
     const response = await fetch("/restaurants-bill/api", {
       method: "POST",
@@ -12,8 +12,8 @@ export const GetStockItemListJasonRestarants = async () => {
         description: "",
         ReqYear: "",
         ReqDate: "",
-        ReqUserID: "",
-        ReqUserTypeID: "",
+        ReqUserID,
+        ReqUserTypeID,
       }),
     });
     if (response.ok) {

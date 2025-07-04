@@ -7,7 +7,6 @@ import { GrApple } from "react-icons/gr";
 import {  useState } from 'react'
 
 
-
 const Login = () => {
   
     const [selectedYear, setSelectedYear] = useState<string | null>(null);
@@ -27,41 +26,30 @@ const Login = () => {
   }
   
     return (
-        <div className="min-h-screen flex items-center px-8 py-8 md:px-6 md:py-6 justify-center bg-gradient-to-br from-green-300 via-blue-500 to-purple-600">
-            <div className="bg-white customLoginHeight    shadow-md rounded-lg p-8 sm:max-w-md max-w-sm  w-full space-y-6">
-                <h2 className="md:text-2xl text-xl customFont mb-3 font-extrabold text-center text-gray-800">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-200 via-blue-100 to-purple-200">
+            <div className="backdrop-blur-md bg-white/80 rounded-2xl shadow-2xl p-8 sm:max-w-md w-full space-y-8 border border-white/60">
+                <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-2 tracking-tight">
                     Welcome to{" "}
-                    <span className="text-blue-600">Cloud Commerce</span>
-                    <span className="text-red-600">!</span>
+                    <span className="text-pink-600">Cloud Commerce</span>
+                    <span className="text-blue-600">!</span>
                 </h2>
-                <form className="space-y-6 relative top-3">
-                    <div>
+                <form className="space-y-6">
                         <input
                             ref={usernameRef}
                             type="text"
                             placeholder="Username"
-                            className="w-full shadow-md rounded-sm bg-slate-50 border border-gray-100 py-3 px-4 placeholder-gray-600 focus:outline-none focus:border-slate-500"
+                        className="w-full rounded-xl bg-white/90 border border-gray-200 py-3 px-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-sm text-lg"
                         />
-                    </div>
-                    <div>
                         <input
                             ref={passwordRef}
                             type="password"
                             placeholder="Password"
-                            className="w-full rounded-md shadow-sm bg-slate-50  border border-gray-100 py-3 px-4 placeholder-gray-600 focus:outline-none focus:border-slate-500"
-                        />
-                    </div>
-
-
-         <div className="text-center flex justify-center flex-col">
-          
-          
-           <label className="text-gray-600">Select Year:</label>
-          
-          <div className="flex flex-col mt-0 justify-center"> 
-            
+                        className="w-full rounded-xl bg-white/90 border border-gray-200 py-3 px-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-sm text-lg"
+                    />
+                    <div>
+                        <label className="block text-gray-600 mb-1 font-medium">Select Year:</label>
           <select
-            className="w-1/2 mx-auto rounded-md shadow-sm flex justify-center bg-slate-50 border border-gray-100 py-3 px-4 placeholder-gray-600 focus:outline-none focus:border-slate-500"
+                            className="w-full rounded-xl bg-white/90 border border-gray-200 py-3 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-sm"
             value={selectedYear || ""}
             onChange={(e) => setSelectedYear(e.target.value)}
           >
@@ -82,17 +70,11 @@ const Login = () => {
             <option value="2023">2023</option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
-        
           </select>
           </div>
-        
-        </div>
-
-
-                    <div>
                         <button
                             type="button"
-                            className="w-full px-4 py-3  bg-gray-900 rounded-md text-white font-semibold  shadow-sm transition duration-300"
+                        className="w-full px-4 py-3 bg-pink-600 hover:bg-pink-700 rounded-xl text-white font-bold shadow-lg transition text-lg"
                             onClick={() => {
                                 signIn("credentials", {
                                     username: usernameRef.current?.value,
@@ -104,35 +86,31 @@ const Login = () => {
                         >
                             Sign In
                         </button>
-                    </div>
-
                 </form>
-                <div className="text-center relative ">
-                    <span className="text-gray-600 ">Or continue with</span>
+                <div className="flex items-center my-4">
+                    <div className="flex-grow h-px bg-gray-200" />
+                    <span className="mx-3 text-gray-400">or continue with</span>
+                    <div className="flex-grow h-px bg-gray-200" />
                 </div>
-                <div className="flex justify-center space-x-4 ">
-                    <div className="bg-white  shadow-md shadow-slate-100 md:px-5 md:py-2 cursor-pointer text-white flex items-center rounded-md px-2 py-2  transition duration-300">
-                        <FcGoogle className="md:h-8 h-6 w-6 md:w-8" />
-                        <h4 className="text-black px-2 mx-1">Google</h4>
-                    </div>
-                    <div className="bg-white shadow-md shadow-slate-100 md:px-3 md:py-3 px-2 py-2 cursor-pointer text-white flex items-center rounded-md   transition duration-300">
-                        <GrApple className="md:h-8 h-6 w-6 text-black md:w-8" />
-                        <h4 className="text-black px-2 mx-1">Apple</h4>
-                    </div>
-                    {/* Include Apple button or icon here */}
+                <div className="flex justify-center space-x-4">
+                    <button className="bg-white/90 shadow px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-pink-50 transition">
+                        <FcGoogle className="h-6 w-6" />
+                        <span className="text-gray-700 font-semibold">Google</span>
+                    </button>
+                    <button className="bg-white/90 shadow px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-pink-50 transition">
+                        <GrApple className="h-6 w-6 text-black" />
+                        <span className="text-gray-700 font-semibold">Apple</span>
+                    </button>
                 </div>
-                <div className="text-center">
+                <div className="text-center mt-4">
                     <span className="text-gray-600">
                         Don't have an account?{" "}
-                        <a href="#" className="text-blue-600">
-                            Sign Up
-                        </a>
+                        <a href="/signup" className="text-pink-600 font-semibold hover:underline">Sign Up</a>
                     </span>
                 </div>
-            </div>
-        </div>
+                    </div>
+                    </div>
     );
 };
-
 
 export default Login;
